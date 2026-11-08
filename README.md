@@ -7,6 +7,6 @@ Scrapes Quotes from http://quotes.toscrape.com and exports them to a csv file up
 
 # Warning:
 
-quotes.csv needs to exist before running and have a single quote inside it this is due to the verification part of the script to ensure duplicate quotes do not exist.
+quotes.csv does not need to exist before running: the script opens it in append mode, which creates the file if it is missing. The script never reads the file back and has no duplicate check, so a later run can append a quote that is already in the file.
 
 ![Banner: a long open specimen case with rows of pinned specimens in grid order, each with a small blank cream label beneath it, the last spaces holding bare pins, soft glass glare across the case](banner.png)

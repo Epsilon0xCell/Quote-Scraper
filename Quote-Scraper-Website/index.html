@@ -61,7 +61,7 @@ footer p{margin-top:.8rem}
 </section>
 <section>
 <h2>The warning on the case</h2>
-<p>The README carries a warning, and the case only works if it is heeded: <code>quotes.csv</code> needs to exist before running, and it needs a single quote inside it. That is because of the verification part of the script, the check that keeps duplicate quotes from entering the collection. An empty case has nothing to check against, so the file has to be seeded with its first specimen by hand.</p>
+<p>The case was not seeded by hand and needs no seeding: <code>Quote-Scraper.py</code> never reads <code>quotes.csv</code> back. It opens the file in append mode, which creates it if it is missing, and there is no verification step and no duplicate check anywhere in the script. That is how the case grew so deep, because a quote already pinned on an earlier run can be pinned again, and most have been.</p>
 </section>
 <section>
 <h2>The collection so far</h2>
