@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quote-Scraper: the specimen case</title>
+<style>
+@font-face{font-family:"EB Garamond";src:url("fonts/EBGaramond-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"EB Garamond";src:url("fonts/EBGaramond-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Source Serif 4";src:url("fonts/SourceSerif4-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Source Serif 4";src:url("fonts/SourceSerif4-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+:root{--mahogany:#4a2320;--mahogany-deep:#331714;--cream:#f3ead2;--paper:#faf5e6;--steel:#6d6a63;--ink:#2e2620;--wing:#c96a2c;--wingblue:#3c5a78;--line:#d9cba6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--mahogany-deep);color:var(--ink);font-family:"Source Serif 4",Georgia,serif;line-height:1.6}
+header{max-width:1020px;margin:0 auto;padding:2.4rem 1.2rem .4rem;text-align:center}
+header img.logo{width:150px;height:150px;border:4px solid var(--mahogany);border-radius:4px;box-shadow:0 5px 16px rgba(0,0,0,.45);background:var(--cream)}
+h1{font-family:"EB Garamond",serif;font-weight:700;font-size:clamp(2.3rem,5.5vw,3.4rem);color:var(--cream);margin-top:1rem}
+h1 span{color:var(--wing)}
+header p{max-width:46rem;margin:.5rem auto 0;color:#e2d5b3}
+figure{max-width:1020px;margin:1.4rem auto 0;padding:0 1.2rem}
+figure img{width:100%;border:4px solid var(--mahogany);border-radius:4px}
+main{max-width:1020px;margin:0 auto;padding:1rem 1.2rem 3rem}
+section{margin-top:1.5rem;background:var(--paper);border:1px solid var(--line);border-top:6px solid var(--mahogany);border-radius:4px;padding:1.3rem 1.4rem}
+h2{font-family:"EB Garamond",serif;font-weight:700;font-size:1.7rem;color:var(--mahogany);margin-bottom:.5rem}
+p{margin:.45rem 0}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:#efe6cc;padding:.05rem .35rem;border-radius:3px}
+ul{margin:.4rem 0 .4rem 1.3rem}
+li{margin:.28rem 0}
+.label{display:inline-block;background:var(--cream);border:1px solid var(--steel);color:var(--mahogany);font-family:"EB Garamond",serif;font-weight:700;padding:.1rem .7rem;border-radius:2px;box-shadow:0 2px 5px rgba(51,23,20,.35)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:.6rem}
+.grid div{border:1px dashed #b6a67f;border-radius:4px;padding:.9rem 1rem;background:#fffdf4}
+.grid b{color:var(--mahogany)}
+a{color:var(--wingblue)}
+footer{border-top:4px solid var(--mahogany);padding:1.2rem;text-align:center;color:#cbbd97;font-size:.95rem;max-width:1020px;margin:0 auto}
+footer img{max-width:820px;width:100%;border:4px solid var(--mahogany);border-radius:4px}
+footer p{margin-top:.8rem}
+</style>
+</head>
+<body>
+<header>
+<img class="logo" src="assets/logo.png" alt="Quote-Scraper logo: an open mahogany specimen case seen from above, one bright butterfly pinned at its centre above a small blank cream label">
+<h1>Quote-Scraper: <span>the specimen case</span></h1>
+<p>Every quote is a specimen. The scraper gathers them from quotes.toscrape.com, pins each new one into the collection as a row of its own, and the case keeps growing, five minutes at a time.</p>
+</header>
+<figure><img src="assets/intro-banner.png" alt="Forceps placing a fresh specimen into the last space of the case, its cream label still blank, the filled rows stretching away in order behind it"></figure>
+<main>
+<section>
+<h2>What the scraper does</h2>
+<p><strong>Quote-Scraper</strong> collects quotes from <code>http://quotes.toscrape.com</code> and exports them to <code>quotes.csv</code>. On each run, <code>Quote-Scraper.py</code> fetches the site's front page, reads the quote blocks on it with BeautifulSoup, chooses one quote at random, prints it, and appends it to the csv as a single row: the quote text, a dash, and the author.</p>
+<p style="text-align:center;margin:1rem 0"><span class="label">one quote per run, pinned in its own row</span></p>
+</section>
+<section>
+<h2>The five minute cycle</h2>
+<p>The collection is kept by a GitHub Actions workflow, not by hand. The workflow (named Daily Script, whatever the name suggests) runs on a cron of <code>*/5 * * * *</code>, every five minutes:</p>
+<ul>
+<li>It sets up Python 3.8 and installs the dependencies: <code>requests</code> from <code>requirements.txt</code>, and BeautifulSoup4 alongside it.</li>
+<li>It runs <code>python Quote-Scraper.py</code>, which adds one more row to <code>quotes.csv</code>.</li>
+<li>It commits the result with the message "Update quote csv data" and pushes.</li>
+</ul>
+<p>A second, quieter workflow opens a check-in issue every seven days, asking what errors the project has met that week.</p>
+</section>
+<section>
+<h2>The warning on the case</h2>
+<p>The README carries a warning, and the case only works if it is heeded: <code>quotes.csv</code> needs to exist before running, and it needs a single quote inside it. That is because of the verification part of the script, the check that keeps duplicate quotes from entering the collection. An empty case has nothing to check against, so the file has to be seeded with its first specimen by hand.</p>
+</section>
+<section>
+<h2>The collection so far</h2>
+<div class="grid">
+<div><b>quotes.csv</b><p>The dataset itself: 13,479,531 bytes and 118,892 rows when this page was built, one quote per row, gathered five minutes at a time.</p></div>
+<div><b>Quote-Scraper.py</b><p>The whole scraper in one small file: fetch, parse, choose at random, print, append. It imports requests, BeautifulSoup, csv, and random, and nothing else.</p></div>
+<div><b>requirements.txt</b><p>One line: <code>requests</code>. BeautifulSoup4 is installed by the workflow next to it.</p></div>
+<div><b>Licence</b><p>GNU General Public License v3, in <code>LICENSE</code> in the repository.</p></div>
+</div>
+</section>
+</main>
+<footer>
+<img src="assets/banner.png" alt="A long open specimen case with rows of pinned specimens in grid order, each with a small blank cream label beneath it, the last spaces holding bare pins, soft glass glare across the case">
+<p>Quote-Scraper: a Python scraper that collects quotes from quotes.toscrape.com into quotes.csv, refreshed every five minutes. Repository: <a href="https://github.com/Epsilon0xCell/Quote-Scraper">github.com/Epsilon0xCell/Quote-Scraper</a>. Artwork: logo.png, banner.png, and intro-banner.png. Fonts: EB Garamond and Source Serif 4, both under the SIL Open Font License 1.1, shipped beside this page with their license texts.</p>
+</footer>
+</body>
+</html>
